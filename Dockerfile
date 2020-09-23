@@ -45,7 +45,7 @@ RUN useradd -u 1000 -ms /bin/bash -g www www
 COPY . /var/www
 
 # Project Vendor Install
-RUN composer install
+#RUN composer install
 
 # Copy existing application directory permissions
 COPY --chown=www:www . /var/www
