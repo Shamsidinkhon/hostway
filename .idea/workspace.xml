@@ -19,13 +19,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1fbd226f-3360-4c7a-8f16-8eaca5babb3b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/hostway.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/hostway.iml" afterDir="false" />
+    <list default="true" id="1fbd226f-3360-4c7a-8f16-8eaca5babb3b" name="Default Changelist" comment="docker files fixed &amp; phalcon dev tools installed &amp; micro project initiated">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/local.ini" beforeDir="false" afterPath="$PROJECT_DIR$/php/local.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nginx/conf.d/app.conf" beforeDir="false" afterPath="$PROJECT_DIR$/nginx/conf.d/app.conf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,8 +56,16 @@
       <option name="presentableId" value="Default" />
       <updated>1600838445656</updated>
       <workItem from="1600838446692" duration="5265000" />
-      <workItem from="1600858404716" duration="6852000" />
+      <workItem from="1600858404716" duration="7171000" />
     </task>
+    <task id="LOCAL-00001" summary="docker files fixed &amp; phalcon dev tools installed &amp; micro project initiated">
+      <created>1600866328601</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1600866328601</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -77,10 +82,22 @@
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="docker files fixed &amp; phalcon dev tools installed &amp; micro project initiated" />
+    <option name="LAST_COMMIT_MESSAGE" value="docker files fixed &amp; phalcon dev tools installed &amp; micro project initiated" />
+  </component>
   <component name="WindowStateProjectService">
     <state x="698" y="355" width="586" height="403" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1600845279541">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="698" y="355" width="586" height="403" key="#com.intellij.fileTypes.FileTypeChooser/72.27.1848.1053/1920.0.1920.1080@72.27.1848.1053" timestamp="1600845279541" />
+    <state x="247" y="121" width="1478" height="879" key="DiffContextDialog" timestamp="1600866393681">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="247" y="121" width="1478" height="879" key="DiffContextDialog/72.27.1848.1053/1920.0.1920.1080@72.27.1848.1053" timestamp="1600866393681" />
+    <state x="591" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1600866397970">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="591" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2/72.27.1848.1053/1920.0.1920.1080@72.27.1848.1053" timestamp="1600866397970" />
   </component>
 </project>
