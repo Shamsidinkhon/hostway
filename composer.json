@@ -1,5 +1,9 @@
 {
     "require": {
-        "phalcon/devtools": "^4.0"
+        "phalcon/devtools": "^4.0",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "require-dev": {
+        "phalcon/ide-stubs": "^4.0"
     }
 }
