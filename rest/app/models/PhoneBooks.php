@@ -71,7 +71,7 @@ class PhoneBooks extends \Phalcon\Mvc\Model
                 [
                     'beforeCreate' => [
                         'field' => ['inserted_on', 'updated_on'],
-                        'format' => new self()
+                        'format' => 'Y-m-d H:i:s'
                     ],
                     'beforeUpdate' => [
                         'field' => 'updated_on',
