@@ -1,3 +1,4 @@
 vendor
 .idea
 rest/app/runtime/logs/*
+rest/app/runtime/cache/*

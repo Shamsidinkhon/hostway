@@ -26,10 +26,10 @@ RUN cd php-psr \
 RUN docker-php-ext-install pdo pdo_mysql
 
 # Install phalcon
-RUN pecl channel-update pecl.php.net && pecl install phalcon
+RUN pecl channel-update pecl.php.net && pecl install phalcon && pecl install apcu
 
 RUN echo extension=psr.so | tee -a /usr/local/etc/php/conf.d/php.ini
-RUN docker-php-ext-enable  phalcon
+RUN docker-php-ext-enable  phalcon apcu
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*

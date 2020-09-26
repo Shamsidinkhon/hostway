@@ -3,6 +3,7 @@
 use Phalcon\Mvc\Model\Behavior\Timestampable;
 use Phalcon\Paginator\Adapter\QueryBuilder;
 use Phalcon\Validation;
+use Phalcon\Validation\Validator\Callback;
 use Phalcon\Validation\Validator\InclusionIn;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\Regex;
@@ -101,13 +102,17 @@ class PhoneBooks extends \Phalcon\Mvc\Model
                 ]
             )
         );
-        $validator->add('country_code', new InclusionIn([
-            'domain' => self::getCountryCodes(),
+        $validator->add('country_code', new Callback([
+            'callback' => function($model){
+                return isset(self::getCountryCodes()[$model->country_code]);
+            },
             'allowEmpty' => true,
             'message' => 'Please provide a valid Country Code'
         ]));
-        $validator->add('timezone', new InclusionIn([
-            'domain' => self::getTimZones(),
+        $validator->add('timezone', new Callback([
+            'callback' => function($model){
+                return isset(self::getTimZones()[$model->timezone]);
+            },
             'allowEmpty' => true,
             'message' => 'Please provide a valid time zone'
         ]));
@@ -169,9 +174,18 @@ class PhoneBooks extends \Phalcon\Mvc\Model
      */
     public static function getCountryCodes()
     {
-        $response = RequestHelper::get('GET', 'https://api.hostaway.com/countries');
-        if (isset($response['result'])) return array_keys($response['result']);
-        return [];
+        $cache = Phalcon\DI::getDefault()->get("cache");
+        $cacheKey = 'country_codes.cache';
+        $countryCodes = $cache->get($cacheKey);
+        if ($countryCodes == null) {
+            $response = RequestHelper::get('GET', 'https://api.hostaway.com/countries');
+            if (isset($response['result'])){
+                $cache->set($cacheKey, $response['result']);
+                return $response['result'];
+            }
+            return [];
+        }
+        return json_decode(json_encode($countryCodes), true);
     }
 
     /**
@@ -181,8 +195,17 @@ class PhoneBooks extends \Phalcon\Mvc\Model
      */
     public static function getTimZones()
     {
-        $response = RequestHelper::get('GET', 'https://api.hostaway.com/timezones');
-        if (isset($response['result'])) return array_keys($response['result']);
-        return [];
+        $cache = Phalcon\DI::getDefault()->get("cache");
+        $cacheKey = 'timezones.cache';
+        $timezones = $cache->get($cacheKey);
+        if ($timezones == null) {
+            $response = RequestHelper::get('GET', 'https://api.hostaway.com/timezones');
+            if (isset($response['result'])){
+                $cache->set($cacheKey, $response['result']);
+                return $response['result'];
+            }
+            return [];
+        }
+        return json_decode(json_encode($timezones), true);
     }
 }

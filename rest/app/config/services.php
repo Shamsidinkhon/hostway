@@ -1,7 +1,12 @@
 <?php
 declare(strict_types=1);
 
+use Phalcon\Cache;
+use Phalcon\Cache\AdapterFactory;
+use Phalcon\Logger;
+use Phalcon\Logger\Adapter\Stream;
 use Phalcon\Mvc\View\Simple as View;
+use Phalcon\Storage\SerializerFactory;
 use Phalcon\Url as UrlResolver;
 
 /**
@@ -55,4 +60,33 @@ $di->setShared('db', function () {
     $connection = new $class($params);
 
     return $connection;
+});
+
+/**
+ * The Logger component is used to store errors and exceptions
+ */
+$di->setShared('logger', function () {
+    $adapter = new Stream(APP_PATH . '/runtime/logs/hostway_main.log');
+    return new Logger(
+        'messages',
+        [
+            'main' => $adapter,
+        ]
+    );
+});
+
+/**
+ * The Cache component is used to cache most used data
+ */
+$di->setShared('cache', function () {
+    $serializerFactory = new SerializerFactory();
+    $adapterFactory    = new AdapterFactory($serializerFactory);
+
+    $options = [
+        'defaultSerializer' => 'Json',
+        'lifetime'          => 7200
+    ];
+
+    $adapter = $adapterFactory->newInstance('apcu', $options);
+    return new Cache($adapter);
 });

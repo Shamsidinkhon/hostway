@@ -92,15 +92,8 @@ function responseHandle($data)
 }
 
 $app->error(
-    function ($e) {
-        $adapter = new Stream(APP_PATH . '/runtime/logs/hostway_main.log');
-        $logger = new Logger(
-            'messages',
-            [
-                'main' => $adapter,
-            ]
-        );
-        $logger->critical($e->getMessage() . '<br>' . '<pre>' . $e->getTraceAsString() . '</pre>');
+    function ($e) use ($app) {
+        $app->logger->critical($e->getMessage() . '<br>' . '<pre>' . $e->getTraceAsString() . '</pre>');
         $response = new Response();
         return $response->setJsonContent([
             'status' => false,
