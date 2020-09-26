@@ -2,9 +2,11 @@
 declare(strict_types=1);
 
 use Phalcon\Di\FactoryDefault;
+use Phalcon\Logger;
+use Phalcon\Logger\Adapter\Stream;
 use Phalcon\Mvc\Micro;
 
-error_reporting(E_ALL);
+error_reporting(E_ALL & ~E_WARNING);
 
 define('BASE_PATH', dirname(__DIR__));
 define('APP_PATH', BASE_PATH . '/app');
@@ -42,6 +44,17 @@ try {
      */
     $app = new Micro($di);
 
+    $app->error(function ($e) {
+        $adapter = new Stream(APP_PATH . '/runtime/logs/hostway_main.log');
+        $logger = new Logger(
+            'messages',
+            [
+                'main' => $adapter,
+            ]
+        );
+        $logger->critical($e->getMessage() . '<br>' . '<pre>' . $e->getTraceAsString() . '</pre>');
+    });
+
     /**
      * Include Application
      */
@@ -52,6 +65,4 @@ try {
      */
     $app->handle($_SERVER['REQUEST_URI']);
 } catch (\Exception $e) {
-      echo $e->getMessage() . '<br>';
-      echo '<pre>' . $e->getTraceAsString() . '</pre>';
 }

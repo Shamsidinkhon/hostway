@@ -1,6 +1,8 @@
 <?php
 
 use \Phalcon\Http\Response;
+use Phalcon\Logger;
+use Phalcon\Logger\Adapter\Stream;
 
 /**
  * Local variables
@@ -88,3 +90,21 @@ function responseHandle($data)
         $response->setJsonContent(['status' => false, 'data' => 'Something went wrong!']);
     return $response;
 }
+
+$app->error(
+    function ($e) {
+        $adapter = new Stream(APP_PATH . '/runtime/logs/hostway_main.log');
+        $logger = new Logger(
+            'messages',
+            [
+                'main' => $adapter,
+            ]
+        );
+        $logger->critical($e->getMessage() . '<br>' . '<pre>' . $e->getTraceAsString() . '</pre>');
+        $response = new Response();
+        return $response->setJsonContent([
+            'status' => false,
+            'data' => 'Something went wrong. The issue is being fixed right now!'
+        ]);
+    }
+);
