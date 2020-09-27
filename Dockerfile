@@ -49,10 +49,10 @@ COPY . /var/www
 
 # Copy existing application directory permissions
 COPY --chown=www:www . /var/www
-
+COPY ./php/run.sh /tmp
 # Change current user to www
 USER www
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
-CMD ["bash", "-c", "cd /var/www && mkdir rest/app/runtime && mkdir rest/app/runtime/logs && composer install && php-fpm"]
+ENTRYPOINT ["/tmp/run.sh"]
