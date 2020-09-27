@@ -202,4 +202,14 @@ class PhoneBooks extends \Phalcon\Mvc\Model
         $result = json_decode($timezones, true);
         return isset($result['result']) ? $result['result'] : [];
     }
+
+    public static function getWhiteList(){
+        return [
+            'first_name',
+            'last_name',
+            'phone_number',
+            'country_code',
+            'timezone',
+        ];
+    }
 }

@@ -43,7 +43,7 @@ $app->post(
     '/api/phone-books',
     function () {
         $model = new PhoneBooks();
-        $model->assign($this->request->getJsonRawBody(true));
+        $model->assign($this->request->getJsonRawBody(true), PhoneBooks::getWhiteList());
         if ($model->save())
             return ['status' => true, 'data' => []];
         else
@@ -59,7 +59,7 @@ $app->put(
         if(!$model)
             return ['status' => false, 'data' => "Item Not Found"];
 
-        $model->assign($app->request->getJsonRawBody(true));
+        $model->assign($app->request->getJsonRawBody(true), PhoneBooks::getWhiteList());
         if ($model->update())
             return ['status' => true, 'data' => "Item Successfully Saved"];
         else
