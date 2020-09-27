@@ -1,9 +1,5 @@
 <?php
 
-use \Phalcon\Http\Response;
-use Phalcon\Logger;
-use Phalcon\Logger\Adapter\Stream;
-
 /**
  * Local variables
  * @var \Phalcon\Mvc\Micro $app
@@ -16,7 +12,7 @@ use Phalcon\Logger\Adapter\Stream;
 // Retrieves all phone books
 $app->get('/api/phone-books', function () {
     $model = new PhoneBooks();
-    return responseHandle($model->getAll($this->request->getQuery()));
+    return $model->getAll($this->request->getQuery());
 });
 
 // Retrieves phone book based on primary key
@@ -25,8 +21,8 @@ $app->get(
     function ($id) {
         $model = PhoneBooks::find($id)->toArray();
         if (!$model)
-            return responseHandle(['status' => false, 'data' => []]);
-        return responseHandle(['status' => true, 'data' => $model]);
+            return ['status' => false, 'data' => []];
+        return ['status' => true, 'data' => $model];
     }
 );
 
@@ -38,23 +34,24 @@ $app->post(
         $model = new PhoneBooks();
         $model->assign($this->request->getJsonRawBody(true));
         if ($model->save())
-            return responseHandle(['status' => true, 'data' => []]);
+            return ['status' => true, 'data' => []];
         else
-            return responseHandle(['status' => false, 'data' => $model->getMessages()]);
+            return ['status' => false, 'data' => $model->getMessages()];
     }
 );
 
 // Updates phone book based on primary key
 $app->put(
     '/api/phone-books/{id:[0-9]+}',
-    function ($id) {
-        $model = PhoneBooks::find($id);
+    function ($id) use ($app) {
+        $model = PhoneBooks::find($id)->getFirst();
         if(!$model)
-            return responseHandle(['status' => false, 'data' => "Item Not Found"]);
-        if ($model->update($this->request->getJsonRawBody(true)))
-            return responseHandle(['status' => true, 'data' => "Item Successfully Saved"]);
+            return ['status' => false, 'data' => "Item Not Found"];
+
+        if ($model->assign($app->request->getJsonRawBody(true)) && $model->update())
+            return ['status' => true, 'data' => "Item Successfully Saved"];
         else
-            return responseHandle(['status' => false, 'data' => $model->getMessages()]);
+            return ['status' => false, 'data' => $model->getMessages()];
     }
 );
 
@@ -62,10 +59,10 @@ $app->put(
 $app->delete(
     '/api/phone-books/{id:[0-9]+}',
     function ($id) {
-        $model = PhoneBooks::find($id);
+        $model = PhoneBooks::find($id)->getFirst();
         if(!$model)
-            return responseHandle(['status' => false, 'data' => "Item Not Found"]);
-        return responseHandle(['status' => $model->delete(), 'data' => []]);
+            return ['status' => false, 'data' => "Item Not Found"];
+        return ['status' => $model->delete(), 'data' => []];
     }
 );
 
@@ -74,30 +71,15 @@ $app->delete(
  */
 $app->notFound(function () use ($app) {
     $app->response->setStatusCode(404, "Not Found")->sendHeaders();
-    return responseHandle(['status' => false, 'data' => "404 Not Found"]);
+    return ['status' => false, 'data' => "404 Not Found"];
 });
-
-/**
- * Response handler
- * @param array $data
- */
-function responseHandle($data)
-{
-    $response = new Response();
-    if (is_array($data))
-        $response->setJsonContent($data);
-    else
-        $response->setJsonContent(['status' => false, 'data' => 'Something went wrong!']);
-    return $response;
-}
 
 $app->error(
     function ($e) use ($app) {
         $app->logger->critical($e->getMessage() . '<br>' . '<pre>' . $e->getTraceAsString() . '</pre>');
-        $response = new Response();
-        return $response->setJsonContent([
+        return [
             'status' => false,
             'data' => 'Something went wrong. The issue is being fixed right now!'
-        ]);
+        ];
     }
 );

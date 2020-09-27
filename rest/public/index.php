@@ -44,6 +44,17 @@ try {
      */
     $app = new Micro($di);
 
+    $app->before(function () use ($app) {
+        if (
+        ($app->request->isPost() || $app->request->isPut())
+            && ($app->request->getContentType() != "application/json" || $app->request->getJsonRawBody(true) == null)
+        ) {
+            $app->response->setStatusCode(400, 'Bad Request');
+            $app->response->send();
+            $app->stop();
+        }
+    });
+
     $app->error(function ($e) {
         $adapter = new Stream(APP_PATH . '/runtime/logs/hostway_main.log');
         $logger = new Logger(
@@ -54,6 +65,29 @@ try {
         );
         $logger->critical($e->getMessage() . '<br>' . '<pre>' . $e->getTraceAsString() . '</pre>');
     });
+
+    // Making the correct answer after executing
+    $app->after(
+        function () use ($app) {
+            // Getting the return value of method
+            $return = $app->getReturnedValue();
+
+            if (is_array($return)) {
+                // Transforming arrays to JSON
+                $app->response->setJsonContent($return);
+            } elseif (!strlen($return)) {
+                // Successful response without any content
+                $app->response->setStatusCode(204, 'No Content');
+            } else {
+                // Unexpected response
+                throw new Exception('Bad Response');
+            }
+
+            // Sending response to the client
+            $app->response->send();
+        }
+    );
+
 
     /**
      * Include Application
