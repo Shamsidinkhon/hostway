@@ -11,7 +11,8 @@ RUN apt-get update && apt-get install -y \
     git \
     zip \
     unzip \
-    curl
+    curl \
+    dos2unix
 
 # Install php-psr
 RUN git clone https://github.com/jbboehr/php-psr.git
@@ -50,6 +51,7 @@ COPY . /var/www
 # Copy existing application directory permissions
 COPY --chown=www:www . /var/www
 COPY ./php/run.sh /tmp
+RUN dos2unix /tmp/run.sh
 # Change current user to www
 USER www
 
