@@ -55,4 +55,4 @@ USER www
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
-CMD ["php-fpm"]
+CMD ["bash", "-c", "cd /var/www && mkdir rest/app/runtime && mkdir rest/app/runtime/logs && composer install && php-fpm"]

@@ -9,6 +9,17 @@
  * Add your routes here
  */
 
+// Home Page
+$app->get('/', function () {
+    return [
+        'get-all' => 'GET: api/phone-books',
+        'get' => 'GET: api/phone-books/1',
+        'insert' => 'POST: api/phone-books',
+        'update' => 'PUT: api/phone-books/1',
+        'delete' => 'DELETE: api/phone-books/1',
+    ];
+});
+
 // Retrieves all phone books
 $app->get('/api/phone-books', function () {
     $model = new PhoneBooks();
