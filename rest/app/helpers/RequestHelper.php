@@ -7,7 +7,7 @@ class RequestHelper
         $client = new \GuzzleHttp\Client();
         $res = $client->request($method, $api_url);
         if ($res->getStatusCode() == 200)
-            return json_decode($res->getBody(), true);
+            return $res->getBody()->getContents();
         return null;
     }
 }

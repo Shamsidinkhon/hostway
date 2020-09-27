@@ -48,7 +48,8 @@ $app->put(
         if(!$model)
             return ['status' => false, 'data' => "Item Not Found"];
 
-        if ($model->assign($app->request->getJsonRawBody(true)) && $model->update())
+        $model->assign($app->request->getJsonRawBody(true));
+        if ($model->update())
             return ['status' => true, 'data' => "Item Successfully Saved"];
         else
             return ['status' => false, 'data' => $model->getMessages()];

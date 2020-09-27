@@ -103,14 +103,14 @@ class PhoneBooks extends \Phalcon\Mvc\Model
             )
         );
         $validator->add('country_code', new Callback([
-            'callback' => function($model){
+            'callback' => function ($model) {
                 return isset(self::getCountryCodes()[$model->country_code]);
             },
             'allowEmpty' => true,
             'message' => 'Please provide a valid Country Code'
         ]));
         $validator->add('timezone', new Callback([
-            'callback' => function($model){
+            'callback' => function ($model) {
                 return isset(self::getTimZones()[$model->timezone]);
             },
             'allowEmpty' => true,
@@ -178,14 +178,11 @@ class PhoneBooks extends \Phalcon\Mvc\Model
         $cacheKey = 'country_codes.cache';
         $countryCodes = $cache->get($cacheKey);
         if ($countryCodes == null) {
-            $response = RequestHelper::get('GET', 'https://api.hostaway.com/countries');
-            if (isset($response['result'])){
-                $cache->set($cacheKey, $response['result']);
-                return $response['result'];
-            }
-            return [];
+            $countryCodes = RequestHelper::get('GET', 'https://api.hostaway.com/countries');
+            if ($countryCodes) $cache->set($cacheKey, $countryCodes);
         }
-        return json_decode(json_encode($countryCodes), true);
+        $result = json_decode($countryCodes, true);
+        return isset($result['result']) ? $result['result'] : [];
     }
 
     /**
@@ -199,13 +196,10 @@ class PhoneBooks extends \Phalcon\Mvc\Model
         $cacheKey = 'timezones.cache';
         $timezones = $cache->get($cacheKey);
         if ($timezones == null) {
-            $response = RequestHelper::get('GET', 'https://api.hostaway.com/timezones');
-            if (isset($response['result'])){
-                $cache->set($cacheKey, $response['result']);
-                return $response['result'];
-            }
-            return [];
+            $timezones = RequestHelper::get('GET', 'https://api.hostaway.com/timezones');
+            if ($timezones) $cache->set($cacheKey, $timezones);
         }
-        return json_decode(json_encode($timezones), true);
+        $result = json_decode($timezones, true);
+        return isset($result['result']) ? $result['result'] : [];
     }
 }

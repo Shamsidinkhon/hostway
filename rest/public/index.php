@@ -55,17 +55,6 @@ try {
         }
     });
 
-    $app->error(function ($e) {
-        $adapter = new Stream(APP_PATH . '/runtime/logs/hostway_main.log');
-        $logger = new Logger(
-            'messages',
-            [
-                'main' => $adapter,
-            ]
-        );
-        $logger->critical($e->getMessage() . '<br>' . '<pre>' . $e->getTraceAsString() . '</pre>');
-    });
-
     // Making the correct answer after executing
     $app->after(
         function () use ($app) {
