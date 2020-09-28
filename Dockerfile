@@ -57,4 +57,4 @@ USER www
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
-ENTRYPOINT ["/tmp/run.sh"]
+ENTRYPOINT ["sh", "/tmp/run.sh"]
